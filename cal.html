@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="cal" v-cloak>
+        <input v-model="numOne">
+        <select v-model="currentDo">
+            <option v-for="doItem of doCal" :value=doItem>{{doItem}}</option>
+        </select>
+        <input v-model="numTwo" @keydown.enter="add">
+        <span> = </span>
+        <span>{{result}}</spanspan>
+
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        var cal = new Vue({
+            el: "#cal",
+            data: {
+                numOne: "",
+                numTwo: "",
+                doCal: ["+", "-", "*", "/"],
+                currentDo: "",
+                result: ""
+            },
+            methods: {
+                add: function(){
+                    if((this.numOne && this.numTwo) !== ""){
+                        if(this.currentDo !== ""){
+                            if(this.currentDo !== "/" || this.numTwo !== "0"){
+                                if (!isNaN(this.numOne) && !isNaN(this.numTwo)){
+                                this.result = eval(this.numOne + this.currentDo + this.numTwo); 
+                                }else{
+                                    alert("数字输入类型有误");
+                                }  
+                            }else{
+                                alert("除数不能为零");
+                            }                                         
+                        }else{
+                            alert("你没有选择运算符");
+                        }
+                    }else{
+                        alert("未输入完全");
+                    }     
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
