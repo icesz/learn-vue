@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="cal" v-cloak>
+        <input v-model="numOne">
+        <select v-model="currentOperator">
+            <option v-for="operatorItem of operator" :value=operatorItem>{{operatorItem}}</option>
+        </select>
+        <input v-model="numTwo">
+        <span> = </span>
+        <input v-model="result">
+        <div>{{errorText}}</div>
+
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        var cal = new Vue({
+            el: "#cal",
+            data: {
+                numOne: "",
+                numTwo: "",
+                operator: ["+", "-", "*", "/"],
+                currentOperator: "",
+                errorText: ""  
+            },
+            computed: {
+                result: function () {
+                    this.errorText = "";
+
+                    if (this.numOne.trim()  === "") {
+                        this.errorText = " 你好像忘记输入第一个数了";
+                        return;
+                    }
+
+                    if(this.numTwo.trim() === ""){
+                        this.errorText = " 你好像忘记输入第二个数了";
+                        return;
+                    }
+
+                    if (this.currentOperator === "") {
+                        this.errorText = "你没有选择运算符";
+                        return;
+                    }
+
+                    if (this.currentOperator === "/" && this.numTwo === "0") {
+                        this.errorText = "除数不能为零";
+                        return;
+                    }
+
+                    if (isNaN(this.numOne.trim()) || isNaN(this.numTwo.trim())) {
+                        this.errorText = "数字输入类型有误";
+                        return;
+                    }
+
+                    switch (this.currentOperator) {
+                        case "+": {
+                            return Number(this.numOne) + Number(this.numTwo);
+                        }
+                        case "-": {
+                            return Number(this.numOne) - Number(this.numTwo);
+                        }
+                        case "*": {
+                            return Number(this.numOne) * Number(this.numTwo);
+                        }
+                        case "/": {
+                            return Number(this.numOne) / Number(this.numTwo);
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
